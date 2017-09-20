@@ -1,0 +1,556 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>RoadRadar - Explore</title>
+  <!-- <title>Eventloot</title> -->
+  <meta name="description" content="">
+  <link rel="shortcut icon" href="images/favicon.png">
+  <meta name="viewport" content="width=device-width">
+<!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="bower_components/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="bower_components/bootstrap/datepicker.css">
+<!-- Optional theme -->
+<script src="bower_components/jquery/jquery.js"></script>
+  <script src="bower_components/bootstrap/bootstrap.min.js"></script>
+  <script src="bower_components/jquery/bootstrap-datepicker.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+ <link rel="stylesheet" type="text/css" href="css/style.css">
+ <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+       .controls {
+      position: absolute; top: 10px; left: 10px; z-index: 99;
+    }
+    #submit{
+      margin-left: 1025px;
+    }
+
+    #search{
+      margin-left: 720px;
+      width: 300px;
+    }
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #legend {
+        font-family: Arial, sans-serif;
+        background: #ffd200;
+        padding: 10px;
+        margin: 20px;
+        border: 2px solid #000;
+      }
+      #legend h3 {
+        margin-top: 0;
+        text-align: center;
+      }
+      #legend img {
+        vertical-align: middle;
+        margin-bottom: 5px;
+      }
+    </style>
+
+</head>
+<body>
+  <header>
+   <!-- header start-->
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="navbar no-margin no-border">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+             <!-- <div class="container nopadding"> -->
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <!-- <div class="navbar-header"> -->
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 logo-div">
+                <a class="navbar-brand" href="index.html"><img src="images/logo.png"></a>
+              </div>
+            <!-- </div> -->
+            <div class="col-lg-8 col-md-8 col-sm-8col-xs-8 menu-div">
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="explore.html" class="active">EXPLORE</a></li>
+                <li><a href="itinerary.html">ITINERARY</a></li>
+                <li><a href="report.html">REPORT ISSUE</a></li>
+                <li><a href="contact-us.html">ABOUT US</a></li>
+              </ul>
+              <!-- Collect the nav links, forms, and other content for toggling -->
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>  <!-- /.container-fluid -->
+  </header> <!-- header ends -->
+
+<section class="map-section no-padding no-margin no-border"> 
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 content-div">
+            <!-- <div class="image-div">
+              <img src="images/Asset-11.png">
+            </div> -->
+<!--           <p>Will be available in next interation.</p> -->       
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 steps-div">
+              <strong>Ways to View an Issue:</strong>
+              <ul>
+              <li>Choose the location where you want to see the issues.</li>
+              <div class="location-div">
+                <input type="textbox" id="locationsearch" placeholder="Search your location">
+              </div>
+              <div class="location-div">
+                    <button type="button" class="btn btn-default" onclick="locationfunction()">Enter Location</button>
+              </div>
+              <!-- <h5>OR</h5> -->
+              <li>Choose the type of issue you want to view.</li>
+              <div class="type-div">
+                  <!-- <p>Types of Issue:</p> -->
+                  <select class="form-control options" id="types-id">
+                    <option value="all">All</option>
+                    <option value="potholes" >Potholes</option>
+                    <option value="cracks">Cracks</option>
+                    <option value="others" selected="selected">Others</option>
+                  </select>
+              </div>
+              <div class="type-div">
+                    <button type="button" class="btn btn-default" onclick="typesfunction()">Select Type</button>
+              </div>
+              <!-- <h5>OR</h5> -->
+              <li>Choose Date to get to know when the issue has been posted.</li>
+              <div class="time-div">
+                  <!-- <p>Monthwise Issues Posted:</p> -->
+                  <select class="form-control" id="time-id">
+                    <option value="2017/08" selected="selected">August,2017</option>
+                    <option value="2017/09">September,2017</option>
+                    <option value="2017/10">October,2017</option>
+                    <option value="2017/11">November,2017</option>
+                    <option value="2017/12">December,2017</option>
+                    <option value="2018/01">January,2018</option>
+                    <option value="2018/02">February,2018</option>
+                    <option value="2018/03">March,2018</option>
+                    <option value="2018/04">April,2018</option>
+                    <option value="2018/05">May,2018</option>
+                    <option value="2018/06">June,2018</option>
+                    <option value="2018/07">July,2018</option>
+                  </select>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 type-div">
+                    <button type="button" class="btn btn-default" onclick="timefunction()">Enter Timeframe</button>
+              </div>
+              <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 type-div" style="margin-bottom:8px;">
+                    <button type="button" class="btn btn-default">DOWNLOAD DATASET</button>
+              </div> -->
+              </ul>
+            </div>
+            <div id="wrapper" class="col-lg-9 col-md-9 col-sm-12 col-xs-12 map-div">
+              <!-- <input type="textbox" class="controls" id="search" placeholder="Search your location" style="margin-left: 300px"> -->
+              <!-- <input id="submit" class="controls" type="button" value="Search" style="margin-left: 610px"> -->
+              <div class="map-div" id="map">
+              </div>
+              <!-- <div id="legend"><h3>Legend</h3></div> -->
+              <div id="legend" style="z-index: 0; position: absolute; bottom: 127px; right: 0px;"><h3>Legend</h3><div><img src="http://maps.google.com/mapfiles/ms/icons/green-dot.png"> Completed</div><div><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png"> Unscheduled</div><div><img src="http://maps.google.com/mapfiles/ms/icons/yellow-dot.png"> Scheduled</div></div>
+            </div>           
+        </div>
+      </div>
+    </div>
+    <div class="button-div">
+              <a href="itinerary.html" class="btn btn-default" role="button">Enter Itinerary</a>
+              <a href="report.html" class="btn btn-default" role="button">Report an Issue</a>
+              <a href="Reported_Road.xlsx" class="btn btn-default" role="button">DOWNLOAD DATASET </a>
+                    <!-- <button type="button" class="btn btn-default" onclick="contactpgae()">DOWNLOAD DATASET </button> -->
+           </div>
+  </section>
+
+
+<!-- Rights Part Ends -->
+<section class="rights-section no-padding no-border">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 rights-div">
+        <h5>All Rights Reserved - ROADRADAR</h5>
+        </div>
+      </div>
+    </div>
+</section>
+<!-- Rights Part Ends -->
+
+<!-- google map api starts -->
+ <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8_Lkt5jSWuogp6GB4IKivTDBzVhVmf8Y&callback=initMap&libraries=places">
+    </script>
+  <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+<script>
+      var map;
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 6,
+          center: new google.maps.LatLng(-37.80978395301097,144.96511459350586),
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+        var autocomplete = new google.maps.places.Autocomplete(
+        /** @type {!HTMLInputElement} */(document.getElementById('locationsearch')),
+        {types: ['geocode'],
+        componentRestrictions: {country: 'AU'}
+      });
+        
+
+        $.getJSON("http://120.146.26.90:1111/roadRadarGithub/webresources/entities.reporttable/", 
+              function(data) {
+                defaultMap();
+                console.log(data);
+                var markers= [];
+                var infowindow= null;
+                infowindow = new google.maps.InfoWindow({
+                content: "qwe"
+                });
+                for (var i = 0; i < data.length; i++) {
+                  var lat = data[i]['latitude'];
+                  var lng = data[i]['longitude'];
+                  var loc = data[i]['location'];
+                  var status = data[i]['status'];
+                  var date = data[i]['reportDate'];
+                  var type = data[i]['issueType'];
+                  var status = data[i]['status'];
+                  var latLng = new google.maps.LatLng(lat, lng);
+                  // Creating a marker and putting it on the map
+                  if (status == 'Completed') {
+                  var marker = new google.maps.Marker({
+                    position: latLng,
+                    title: i.toString(),
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png' })}
+                    else if (status == 'Scheduled') {
+                    var marker = new google.maps.Marker({
+                    position: latLng,
+                    title: i.toString(),
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png' })}
+                    else {
+                    var marker = new google.maps.Marker({
+                    position: latLng,
+                    title: i.toString()})}
+                    markers.push(marker);
+                    var infowindow = new google.maps.InfoWindow(); 
+                    bindEvent(marker, latLng, i, loc, date, type);              
+                  }
+            var infowindow = new google.maps.InfoWindow();
+
+            function bindEvent (marker, pos, i, locn, date, type) {
+              console.log(type);
+                google.maps.event.addListener(marker, 'click', function(d) {
+                  infowindow.setContent('<div id="content">'+
+                    '<p style="font-size:14px; font-weight:500;">Issue Details</p>' +
+                '<p style="display:inline-block">Address: ' + locn +
+                '<p> Type: '+ type + '<p> Date: '+ date + '<p> Staus: '+ status +'</div>');
+                  infowindow.open(map, this);
+                });
+            }
+              for (var i = 0; i < markers.length; i++) {
+                   markers[i].setMap(map);
+             }
+             var markerCluster = new MarkerClusterer(map, markers, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+            })
+
+        // Create a <script> tag and set the USGS URL as the source.
+            var script = document.createElement('script');
+            // This example uses a local copy of the GeoJSON stored at
+            // http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojsonp
+            script.src = 'https://developers.google.com/maps/documentation/javascript/examples/json/earthquake_GeoJSONP.js';
+            document.getElementsByTagName('head')[0].appendChild(script);
+          }
+      function defaultMap() {
+          map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 8,
+            center: new google.maps.LatLng(-37.80978395301097,144.96511459350586),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          });
+          var myLatlng = new google.maps.LatLng(-37.80978395301097, 144.96511459350586);
+          var geocoder = new google.maps.Geocoder();
+          marker = new google.maps.Marker({
+          });
+
+           var autocomplete = new google.maps.places.Autocomplete(
+          /** @type {!HTMLInputElement} */(document.getElementById('locationsearch')),
+          {types: ['geocode'],
+          componentRestrictions: {country: 'AU'}
+        });
+           // calllegends();
+      }
+      function locationfunction(){
+        var autocomplete = new google.maps.places.Autocomplete(
+          /** @type {!HTMLInputElement} */(document.getElementById('locationsearch')),
+          {types: ['geocode'],
+          componentRestrictions: {country: 'AU'}
+        });
+          var location = document.getElementById('locationsearch').value;
+          console.log (location);
+           $.getJSON("http://120.146.26.90:1111/roadRadarGithub/webresources/entities.reporttable/getByLocation/"+ location, 
+              function(data) {
+                defaultMap();
+                console.log(data);
+                var markers= [];
+                var infowindow= null;
+                infowindow = new google.maps.InfoWindow({
+                content: "qwe"
+                });
+                for (var i = 0; i < data.length; i++) {
+                  var lat = data[i]['latitude'];
+                  var lng = data[i]['longitude'];
+                  var loc = data[i]['location'];
+                  var status = data[i]['status'];
+                  var date = data[i]['reportDate'];
+                  var type = data[i]['issueType'];
+                  var status = data[i]['status'];
+                  var latLng = new google.maps.LatLng(lat, lng);
+                  // Creating a marker and putting it on the map
+                  if (status == 'Completed') {
+                  var marker = new google.maps.Marker({
+                    position: latLng,
+                    title: i.toString(),
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png' })}
+                    else if (status == 'Scheduled') {
+                    var marker = new google.maps.Marker({
+                    position: latLng,
+                    title: i.toString(),
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png' })}
+                    else {
+                    var marker = new google.maps.Marker({
+                    position: latLng,
+                    title: i.toString()})}
+                    markers.push(marker);
+                    var infowindow = new google.maps.InfoWindow(); 
+                    bindEvent(marker, latLng, i, loc, date, type);              
+                  }
+            var infowindow = new google.maps.InfoWindow();
+
+            function bindEvent (marker, pos, i, locn, date, type) {
+              console.log(type);
+                google.maps.event.addListener(marker, 'click', function(d) {
+                  infowindow.setContent('<div id="content">'+
+                    '<p style="font-size:14px; font-weight:500;">Issue Details</p>' +
+                '<p style="display:inline-block">Address: ' + locn +
+                '<p> Type: '+ type + '<p> Date: '+ date + '<p> Staus: '+ status +'</div>');
+                  infowindow.open(map, this);
+                });
+            }
+              for (var i = 0; i < markers.length; i++) {
+                   markers[i].setMap(map);
+             }
+             var markerCluster = new MarkerClusterer(map, markers, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+            })}
+
+      function typesfunction(){
+        // setMapOnAll(null);
+          var type = document.getElementById('types-id').value;
+          console.log (type);
+          if (type=='all') {
+            $.getJSON("http://120.146.26.90:1111/roadRadarGithub/webresources/entities.reporttable/", 
+              function(data) {
+                defaultMap();
+                var markers= [];
+                var infowindow= null;
+                infowindow = new google.maps.InfoWindow({
+                content: "qwe"
+                });
+                for (var i = 0; i < data.length; i++) {
+                  var lat = data[i]['latitude'];
+                  var lng = data[i]['longitude'];
+                  var loc = data[i]['location'];
+                  var status = data[i]['status'];
+                  var date = data[i]['reportDate'];
+                  var type = data[i]['issueType'];
+                  var status= data[i]['status'];
+                  var latLng = new google.maps.LatLng(lat, lng);
+                  // Creating a marker and putting it on the map
+                  if (status == 'Completed') {
+                  var marker = new google.maps.Marker({
+                    position: latLng,
+                    title: i.toString(),
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png' })}
+                    else if (status == 'Scheduled') {
+                    var marker = new google.maps.Marker({
+                    position: latLng,
+                    title: i.toString(),
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png' })}
+                    else {
+                    var marker = new google.maps.Marker({
+                    position: latLng,
+                    title: i.toString()})}
+                    markers.push(marker);
+                    var infowindow = new google.maps.InfoWindow(); 
+                    bindEvent(marker, latLng, i, loc, date, type);              
+                  }
+            var infowindow = new google.maps.InfoWindow();
+
+            function bindEvent (marker, pos, i, locn, date, type) {
+              console.log(type);
+                google.maps.event.addListener(marker, 'click', function(d) {
+                  infowindow.setContent('<div id="content">'+
+                    '<p style="font-size:14px; font-weight:500;">Issue Details</p>' +
+                '<p style="display:inline-block">Address: ' + locn +
+                '<p> Type: '+ type + '<p> Date: '+ date +' <p> Staus: '+ status +'</div>');
+                  infowindow.open(map, this);
+                });
+            }
+              for (var i = 0; i < markers.length; i++) {
+                   markers[i].setMap(map);
+             }
+             var markerCluster = new MarkerClusterer(map, markers, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+            })
+          } 
+          else {
+            $.getJSON("http://120.146.26.90:1111/roadRadarGithub/webresources/entities.reporttable/getByType/"+ type, 
+              function(data) {
+                defaultMap();
+                console.log(data);
+                var markers= [];
+                var infowindow= null;
+                infowindow = new google.maps.InfoWindow({
+                content: "qwe"
+                });
+                for (var i = 0; i < data.length; i++) {
+                  var lat = data[i]['latitude'];
+                  var lng = data[i]['longitude'];
+                  var loc = data[i]['location'];
+                  var status = data[i]['status'];
+                  var date = data[i]['reportDate'];
+                  var type = data[i]['issueType'];
+                  var status = data[i]['status'];
+                  var latLng = new google.maps.LatLng(lat, lng);
+                  // Creating a marker and putting it on the map
+                  if (status == 'Completed') {
+                  var marker = new google.maps.Marker({
+                    position: latLng,
+                    title: i.toString(),
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png' })}
+                    else if (status == 'Scheduled') {
+                    var marker = new google.maps.Marker({
+                    position: latLng,
+                    title: i.toString(),
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png' })}
+                    else {
+                    var marker = new google.maps.Marker({
+                    position: latLng,
+                    title: i.toString()})}
+                    markers.push(marker);
+                    var infowindow = new google.maps.InfoWindow(); 
+                    bindEvent(marker, latLng, i, loc, date, type);              
+                  }
+            var infowindow = new google.maps.InfoWindow();
+
+            function bindEvent (marker, pos, i, locn, date, type) {
+              console.log(type);
+                google.maps.event.addListener(marker, 'click', function(d) {
+                  infowindow.setContent('<div id="content">'+
+                    '<p style="font-size:14px; font-weight:500;">Issue Details</p>' +
+                '<p style="display:inline-block">Address: ' + locn +
+                '<p> Type: '+ type + '<p> Date: '+ date + '<p> Staus: '+ status +'</div>');
+                  infowindow.open(map, this);
+                });
+            }
+              for (var i = 0; i < markers.length; i++) {
+                   markers[i].setMap(map);
+             }
+             var markerCluster = new MarkerClusterer(map, markers, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+            })
+          }
+      }
+        function timefunction(){
+             var time = document.getElementById('time-id').value;
+          console.log (time);
+          // console.log (dest);
+           $.getJSON("http://120.146.26.90:1111/roadRadarGithub/webresources/entities.reporttable/findByYearAndMonth/"+ time, 
+              function(data) {
+                defaultMap();
+                console.log(data);
+                var markers= [];
+                var infowindow= null;
+                infowindow = new google.maps.InfoWindow({
+                content: "qwe"
+                });
+                for (var i = 0; i < data.length; i++) {
+                  var lat = data[i]['latitude'];
+                  var lng = data[i]['longitude'];
+                  var loc = data[i]['location'];
+                  var status = data[i]['status'];
+                  var date = data[i]['reportDate'];
+                  var type = data[i]['issueType'];
+                  var latLng = new google.maps.LatLng(lat, lng);
+                  // Creating a marker and putting it on the map
+                  if (status == 'Completed') {
+                  var marker = new google.maps.Marker({
+                    position: latLng,
+                    title: i.toString(),
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png' })}
+                    else if (status == 'Scheduled') {
+                    var marker = new google.maps.Marker({
+                    position: latLng,
+                    title: i.toString(),
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png' })}
+                    else {
+                    var marker = new google.maps.Marker({
+                    position: latLng,
+                    title: i.toString()})}
+                    markers.push(marker);
+                    var infowindow = new google.maps.InfoWindow(); 
+                    bindEvent(marker, latLng, i, loc, date, type);              
+                  }
+            var infowindow = new google.maps.InfoWindow();
+
+            function bindEvent (marker, pos, i, locn, date, type) {
+              console.log(type);
+                google.maps.event.addListener(marker, 'click', function(d) {
+                  infowindow.setContent('<div id="content">'+
+                    '<p style="font-size:14px; font-weight:500;">Issue Details</p>' +
+                '<p style="display:inline-block">Address: ' + locn +
+                '<p> Type: '+ type + '<p> Date: '+ date +'</div>');
+                  infowindow.open(map, this);
+                });
+            }
+              for (var i = 0; i < markers.length; i++) {
+                   markers[i].setMap(map);
+             }
+             var markerCluster = new MarkerClusterer(map, markers, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+            })
+           }
+
+//            function setMapOnAll(map) {
+//   for (var i = 0; i < markers.length; i++) {
+//     markers[i].setMap(map);
+//   }
+// }
+      // Loop through the results array and place a marker for each
+      // set of coordinates.
+      // window.eqfeed_callback = function(results) {
+      //   for (var i = 0; i < results.features.length; i++) {
+      //     var coords = results.features[i].geometry.coordinates;
+      //     var latLng = new google.maps.LatLng(coords[1],coords[0]);
+      //     var marker = new google.maps.Marker({
+      //       position: latLng,
+      //       map: map
+      //     });
+      //   }
+      // }
+       function geocodeAddress(geocoder, resultsMap) {
+        var address = document.getElementById('search').value;
+        geocoder.geocode({'address': address, componentRestrictions: {country: 'AU', administrativeArea: 'VIC'}}, function(results, status) {
+          if (status === 'OK') {
+            resultsMap.setCenter(results[0].geometry.location);
+            marker.setPosition(results[0].geometry.location);
+            map.setZoom(18);
+            document.getElementById("lat").value = marker.getPosition().lat();
+            document.getElementById("long").value = marker.getPosition().lng();  
+          } else {
+                    alert('Sorry! We could not locate the address. Try again.');
+              }
+          });
+      }
+    </script>
+
+<!-- google map api ends -->
+
+
+</body>
+</html>

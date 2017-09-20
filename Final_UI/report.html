@@ -1,0 +1,346 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>RoadRadar - Report Issue</title>
+  <!-- <title>Eventloot</title> -->
+  <meta name="description" content="">
+  <!-- <link rel="shortcut icon" href="../images/favicon.ico"> -->
+  <link rel="shortcut icon" href="images/favicon.png">
+  <meta name="viewport" content="width=device-width">
+<!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="bower_components/bootstrap/bootstrap.min.css">
+   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<!-- Optional theme -->
+<!-- <script src="bower_components/jquery/jquery.js"></script> -->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<!-- <script src="bower_components/jquery/jquery.js"></script> -->
+  <script src="bower_components/bootstrap/bootstrap.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+ <link rel="stylesheet" type="text/css" href="css/style.css">
+   <style>
+	html,
+    body,
+    
+    #wrapper { position: relative; }
+
+    .controls {
+    	position: absolute; top: 10px; left: 10px; z-index: 99;
+    }
+    #submit{
+    	margin-left: 335px;
+    	margin-top: 100px;
+    }
+
+    #city{
+    	margin-left: 50px;
+	    width: 280px;
+	    margin-top: 100px;
+    }
+
+  #map_canvas {
+	margin: 0;
+	padding: 0;
+	height: 100%
+	z-index:9;
+		}
+	  </style>
+</head>
+<body>
+  <header>
+   <!-- header start-->
+	<div class="container-fluid">
+	  <div class="row">
+		<nav class="navbar no-margin no-border">
+		  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+			 <!-- <div class="container nopadding"> -->
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<!-- <div class="navbar-header"> -->
+			  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 logo-div">
+				<a class="navbar-brand" href="index.html"><img src="images/logo.png"></a>
+			  </div>
+			<!-- </div> -->
+			<div class="col-lg-8 col-md-8 col-sm-8col-xs-8 menu-div">
+			  <ul class="nav navbar-nav navbar-right">
+				<li><a href="explore.html">EXPLORE</a></li>
+				<li><a href="itinerary.html">ITINERARY</a></li>
+				<li><a href="report.html" class="active">REPORT ISSUE</a></li>
+				<li><a href="contact-us.html">ABOUT US</a></li>
+			  </ul>
+			  <!-- Collect the nav links, forms, and other content for toggling -->
+			</div>
+		  </div>
+		</nav>
+	  </div>
+	</div>  <!-- /.container-fluid -->
+  </header> <!-- header ends -->
+<section class="report-section no-padding no-margin no-border"> 
+  <div class="container-fluid">
+	<div class="row">
+	  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 report-div"> 
+		<!-- <div class=" col-lg-offset-6 col-lg-6 col-md-offset-6 col-md-6 col-sm-12 col-xs-12 map-style-div"> -->
+		  <input id="lat" val="40.713956" placeholder="Latitude" hidden="" />
+		  <input id="long" val="74.006653" placeholder="Longitude" hidden="" />
+		<!-- </div> -->
+		<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 report-option-div">
+		<div class="steps-div">
+		<strong> How to: </strong>
+            <p>Enter address, Select an issue type and Submit.</p>
+			<!-- <strong>Steps to Report an Issue:</strong>
+			<p>1. Choose the type of issue from dropdown.</p>
+			<p>2. Choose the location on map where issue is.</p>
+			<p>3. Click Report an Issue.</p> -->
+		</div>
+		<!-- <div class="types-div">
+		<strong>Types of Issue:</strong>
+			  <select class="form-control" id="types-id">
+				  <option value="potholes" >Potholes</option>
+				  <option value="cracks">Cracks</option>
+				  <option value="others" selected="selected">Others</option>
+			  </select>
+		  </div> -->
+		  <div class="enter-address-div">
+		  	<p><strong>Enter Address:</strong></p>
+		  </div>
+		  <div class="types-div">
+		  	<p><strong>Types of Issue:</strong></p>
+			  	<label class="radio-inline">
+	 				<input type="radio" name="types" id="potholes" value="potholes"> Potholes
+				</label>
+				<label class="radio-inline">
+				 	<input type="radio" name="types" id="cracks" value="cracks"> Cracks
+				</label>
+				<label class="radio-inline">
+				 	<input type="radio" name="types" id="others" value="others" checked> Others
+				</label>
+		  </div>
+		  <div class="option-div">
+			<img src="images/potholes.png">
+			<div class="text-div"><p>Potholes are  usually caused by the presence of underlying water in the soil and heavy traffic.</p></div>
+		  </div>
+		  <div class="option-div">
+			<img src="images/cracks.png">
+			<div class="text-div"><p>Road cracks are caused by environmental condition like rain and poor drainage.</p></div>
+			</div>
+		  <div class="option-div">
+			<img src="images/others.png">
+			<div class="text-div"><p>Others. Let us know about which are you concerned the most and we will make a new category!</p></div>
+		  </div>
+			<button type="button" class="btn btn-default report-button" id="report"></button>
+			<p class="result" id="error">Error!</p>
+			<p class="result" id="success">Success!</p>
+		</div>
+		<div id="wrapper">
+			<!-- <input type="textbox" class="controls" id="search" placeholder="Search your location"> -->
+			<input id="city" class="controls" value="" placeholder="Search your location">
+			<input id="address" class="controls" type="textbox" placeholder="Search your location", hidden="">
+			<input id="submit" class="controls" type="button" value="Search">
+		    <input id="lat" name="lat" value="", hidden="">
+		    <input id="long" name="long" value="", hidden="">
+		    <input id="city" name="city" value="", hidden="">
+		    <input id="status" name="status" value="Unscheduled", hidden="">
+		<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 map-div" id="map_canvas">
+		</div>
+		</div>
+	  </div>
+	  </div>
+	</div>
+</section>
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="thank-you">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <i class="fa fa-thumbs-up fa-3x" aria-hidden="true"></i> <p> Thank you for reporting issue on our Website.</p>
+    </div>
+  </div>
+</div>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUOEfSlgXlMJwMgLi3zqh__TqWk0Z6YiE&callback=initMap&libraries=places">
+	</script>
+<!-- <div class="error-div" id="error">
+	<div class="inner-div">
+		<h2>Please put the Location and Issue first.</h2>
+	</div>
+</div> -->
+<!-- <div class="success-div" id="success">
+	<div class="inner-div">
+		<h2>Thank you for your Support.</h2>
+	</div>
+</div> -->
+
+<script>
+
+var map;
+var marker;
+var geocoder;
+
+
+function initMap() {
+  var myLatlng = new google.maps.LatLng(-37.80978395301097, 144.96511459350586);
+
+  var geocoder = new google.maps.Geocoder();
+  
+  var myOptions = {
+	zoom: 8,
+	center: myLatlng,
+	mapTypeId: google.maps.MapTypeId.ROADMAP
+  }
+
+  map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+  marker = new google.maps.Marker({
+	draggable: true,
+	position: myLatlng,
+	map: map,
+	title: "My issue"
+  });
+ 
+  var autocomplete = new google.maps.places.Autocomplete(
+        /** @type {!HTMLInputElement} */(document.getElementById('city')),
+        {types: ['geocode'],
+        componentRestrictions: {country:"AU"}
+      });
+
+  document.getElementById('submit').addEventListener('click', function() {
+          geocodeAddress(geocoder, map);
+          document.getElementById("lat").value = marker.getPosition().lat();
+          document.getElementById("long").value = marker.getPosition().lng();
+          geocodeLatLng(); 
+  });
+
+  google.maps.event.addListener(marker, 'dragend', function(event) {
+	document.getElementById("lat").value = event.latLng.lat();
+	document.getElementById("long").value = event.latLng.lng();
+	geocodeLatLng();
+	geocodeAddress();
+  });
+
+  google.maps.event.addListener(map, 'click', function(event) {
+	document.getElementById("lat").value = event.latLng.lat();
+	document.getElementById("long").value = event.latLng.lng();
+	marker.setPosition(event.latLng);
+	geocodeLatLng();
+	geocodeAddress();
+  });
+
+  // google.maps.event.addDomListener(window, "load", initialize());
+ 
+  function geocodeAddress(geocoder, resultsMap) {
+        var address = document.getElementById('city').value;
+        geocoder.geocode({'address': address, componentRestrictions: {country: 'AU', administrativeArea: 'VIC'}}, function(results, status) {
+          if (status === 'OK') {
+            resultsMap.setCenter(results[0].geometry.location);
+            marker.setPosition(results[0].geometry.location);
+            map.setZoom(18);
+            document.getElementById("lat").value = marker.getPosition().lat();
+            document.getElementById("long").value = marker.getPosition().lng();  
+            geocodeLatLng(); 
+          } else {
+                    alert('Sorry! We could not locate the address. Try again.');
+              }
+          });
+      }
+
+  function geocodeLatLng(geocoder, map, infowindow) {
+        var inputLat = document.getElementById('lat').value;
+        var inputLong = document.getElementById('long').value;
+        var latlng = {lat: parseFloat(inputLat), lng: parseFloat(inputLong)};
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({'location': latlng}, function(results, status) {
+          if (status === 'OK') {
+            if (results[0]) {
+              document.getElementById("city").value = results[0].formatted_address;
+            } else {
+              window.alert('No results found');
+            }
+          } else {
+            window.alert('Geocoder failed due to: ' + status);
+          }
+        });}
+
+}
+
+	</script>
+
+<!-- Rights Part Ends -->
+<section class="rights-section no-padding no-border">
+	<div class="container">
+	  <div class="row">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 rights-div">
+		<h4>All Rights Reserved - ROADRADAR</h4>
+		</div>
+	  </div>
+	</div>
+</section>
+<!-- Rights Part Ends -->
+<script>
+  $('#report').click(function() {
+	var abc= document.getElementById('lat').value;
+	var def = document.getElementById('long').value;
+	var asd = document.getElementById('city').value;
+	var zxc = document.getElementById('status').value;
+
+	if (document.getElementById('potholes').checked) {
+	  xyz = document.getElementById('potholes').value;
+	}
+	if (document.getElementById('cracks').checked) {
+	  xyz = document.getElementById('cracks').value;
+	}
+	if (document.getElementById('others').checked) {
+	  xyz = document.getElementById('others').value;
+	}
+	// var qwe = asd.split(',', 1);
+	console.log (abc);
+	console.log (def);
+	console.log (xyz);
+	console.log (asd);
+	console.log (zxc);
+	if(abc == '' && def == '') {
+	  	$('#error').addClass('show');
+		setTimeout(function() {
+			$('#error').removeClass('show');
+		}, 3000);
+	} else {
+	  $('#success').addClass('show');
+	  $('#thank-you').modal('show');
+		setTimeout(function() {
+			$('#success').removeClass('show');
+		}, 3000);
+		setTimeout(function() {
+			$('#thank-you').modal('hide');
+		}, 4000);
+		
+		// $.ajax({
+		// 	url: 'http://118.138.90.236:8080/roadDB/webresources/entities.reporttable/putReport/',
+		// 	type: 'POST',
+		// 	data:  JSON.stringify({ISSUE_TYPE: xyz, LATITUDE: abc, LONGTITUDE: def}), dataType:'json',
+		// 	// data: '{"ISSUE_TYPE":"Cracks", "LATITUDE":"345678", "LONGTITUDE":"34567"}',
+		// 	crossDomain : true
+		// 	// success: function(data2) {
+		// 	// 	console.log(data2);
+		// 	// },
+		// 	// error: function(error) {
+		// 	// 	console.log(error);
+		// 	// }
+
+		// });
+		// var url = 'http://118.138.90.236:8080/roadDB/webresources/entities.reporttable/putReport/'
+		// $.post(url, {ISSUE_TYPE: xyz, LATITUDE: abc, LONGTITUDE: def}, 
+  //       function(data) {
+  //       	console.log(data);
+  //       });
+//http://118.138.90.236:8080/roadRadarGithub/webresources/entities.reporttable///putReport/
+  	$.getJSON("http://120.146.26.90:1111/roadRadarGithub/webresources/entities.reporttable/putReport/"+ xyz + "/"+ abc + "/" + def + "/" + zxc + "/" + asd, 
+        function(data) {
+        	console.log(data);
+        },"json")
+	}
+  })
+
+// $.get("http://118.138.119.141:8080/roadRadarGithub/webresources/entities.reporttable/putReport/"+ xyz + "/"+ abc + "/" + def + "/" + qwe, 
+//         function(data) {
+//         	console.log(data);
+//         },"json")
+// 	}
+//   })
+</script>
+  </body>
+  </html>
